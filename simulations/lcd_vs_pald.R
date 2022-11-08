@@ -1,5 +1,5 @@
 library(tidyverse)
-library(gridExtra)
+library(patchwork)
 
 results_files <- c("normal_location_shift_results.csv",
                    "normal_scale_shift_results.csv",
@@ -44,5 +44,6 @@ p2 <- data.frame(lcd_error, lcd_power, pald_error, pald_power, scenario) %>%
        color = "Scenario", shape = "Scenario")
 
 pdf("lcd_vs_pald_results.pdf", 10, 4)
-grid.arrange(p1, p2, ncol=2)
+combined <- p1 + p2 & theme(legend.position = "right")
+combined + plot_layout(guides = "collect")
 dev.off()
