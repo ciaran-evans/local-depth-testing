@@ -4,11 +4,21 @@ library(depthtestr)
 library(vegan)
 library(mvtnorm)
 
+
+runif_ball <- function(n, d, c, r){
+  radii <- runif(n)^(1/d)
+  z = matrix(rnorm(n*d),nrow=n,ncol=d)
+  x = r*z/rep(sqrt(rowSums(z^2))/radii,1)
+  sweep(x, 2, c, "+")
+}
+
+
 N1 = 50
 N2 = 50
 nsamp <- 500
 
 ds <- c(2, 5, 10, 20, 50)
+alpha = rep(1, 3)/3
 
 type_1_error_hd <- c()
 type_1_error_mah <- c()
@@ -55,16 +65,30 @@ for(j in 1:length(ds)){
   
   for(i in 1:nsamp){
     
-    samp1 = mvtnorm::rmvnorm(N1, mean = rep(0, d))
-    samp2 = mvtnorm::rmvnorm(N2, mean = rep(delta/sqrt(N1 + N2), d))
+    y1 <- sample(c(0, 1, 2), N1, replace = T, prob = alpha)
+    samp1 <- runif_ball(N1, d = d, c = rep(0, d), r = 1)*(y1 == 0) +
+      runif_ball(N1, d = d, c = rep(2, d), r = 1)*(y1 == 1) +
+      runif_ball(N1, d = d, c = rep(4, d), r = 1)*(y1 == 2)
     
-    pvals_hd[i] <- suppressMessages(depthTest(samp1, samp2, "halfspace")$pval)
-    pvals_mah[i] <- suppressMessages(depthTest(samp1, samp2, "mahalanobis")$pval)
-    pvals_lp[i] <- suppressMessages(depthTest(samp1, samp2, "lp")$pval)
-    pvals_pd[i] <- suppressMessages(depthTest(samp1, samp2, "pd")$pval)
-    pvals_lcd_variant[i] <- suppressMessages(depthTest(samp1, samp2, "lcd-variant")$pval)
-    pvals_lcd[i] <- suppressMessages(depthTest(samp1, samp2, "lcd")$pval)
-    pvals_pvb[i] <- suppressMessages(depthTest(samp1, samp2, "pvb")$pval)
+    y2 <- sample(c(0, 1, 2), N2, replace = T, prob = alpha)
+    samp2 <- runif_ball(N2, d = d, c = rep(0, d), r = 1)*(y2 == 0) +
+      runif_ball(N2, d = d, c = rep(2, d), r = 1)*(y2 == 1) +
+      runif_ball(N2, d = d, c = rep(4, d), r = 1)*(y2 == 2)
+    
+    pvals_hd[i] <- suppressMessages(depthTest(samp1, samp2, "halfspace", 
+                                              loo_correction = F)$pval)
+    pvals_mah[i] <- suppressMessages(depthTest(samp1, samp2, "mahalanobis", 
+                                               loo_correction = F)$pval)
+    pvals_lp[i] <- suppressMessages(depthTest(samp1, samp2, "lp", 
+                                              loo_correction = F)$pval)
+    pvals_pd[i] <- suppressMessages(depthTest(samp1, samp2, "pd", 
+                                              loo_correction = F)$pval)
+    pvals_lcd_variant[i] <- suppressMessages(depthTest(samp1, samp2, "lcd-variant", 
+                                               loo_correction = F)$pval)
+    pvals_lcd[i] <- suppressMessages(depthTest(samp1, samp2, "lcd", 
+                                                loo_correction = F)$pval)
+    pvals_pvb[i] <- suppressMessages(depthTest(samp1, samp2, "pvb", 
+                                               loo_correction = F)$pval)
     
     points <- rbind(samp1, samp2)
     x <- as.matrix(vegdist(points, binary=FALSE, method="euclidean"))
@@ -90,7 +114,7 @@ for(j in 1:length(ds)){
 }
 
 # power
-delta <- 2
+delta <- 1
 for(j in 1:length(ds)){
   
   set.seed(j)
@@ -123,25 +147,53 @@ for(j in 1:length(ds)){
   
   for(i in 1:nsamp){
     
-    samp1 = mvtnorm::rmvnorm(N1, mean = rep(0, d))
-    samp2 = mvtnorm::rmvnorm(N2, mean = rep(delta/sqrt(N1 + N2), d))
-    samp3 = mvtnorm::rmvnorm(N2, mean = rep(0, d))
+    y1 <- sample(c(0, 1, 2), N1, replace = T, prob = alpha)
+    samp1 <- runif_ball(N1, d = d, c = rep(0, d), r = 1)*(y1 == 0) +
+      runif_ball(N1, d = d, c = rep(2, d), r = 1)*(y1 == 1) +
+      runif_ball(N1, d = d, c = rep(4, d), r = 1)*(y1 == 2)
     
-    test_hd_12 <- suppressMessages(depthTest(samp1, samp2, "halfspace"))
-    test_mah_12 <- suppressMessages(depthTest(samp1, samp2, "mahalanobis"))
-    test_pvb_12 <- suppressMessages(depthTest(samp1, samp2, "pvb"))
-    test_lp_12 <- suppressMessages(depthTest(samp1, samp2, "lp"))
-    test_lcd_variant_12 <- suppressMessages(depthTest(samp1, samp2, "lcd-variant"))
-    test_lcd_12 <- suppressMessages(depthTest(samp1, samp2, "lcd"))
-    test_pd_12 <- suppressMessages(depthTest(samp1, samp2, "pd"))
+    y2 <- sample(c(0, 1, 2), N2, replace = T, prob = alpha)
+    samp2 <- runif_ball(N2, d = d, c = rep(0, d), 
+                        r = 1 + delta/sqrt(N1 + N2))*(y2 == 0) +
+      runif_ball(N2, d = d, c = rep(2, d), 
+                 r = 1 + delta/sqrt(N1 + N2))*(y2 == 1) +
+      runif_ball(N2, d = d, c = rep(4, d), 
+                 r = 1 + delta/sqrt(N1 + N2))*(y2 == 2)
     
-    test_hd_13 <- suppressMessages(depthTest(samp1, samp3, "halfspace"))
-    test_mah_13 <- suppressMessages(depthTest(samp1, samp3, "mahalanobis"))
-    test_pvb_13 <- suppressMessages(depthTest(samp1, samp3, "pvb"))
-    test_lp_13 <- suppressMessages(depthTest(samp1, samp3, "lp"))
-    test_lcd_variant_13 <- suppressMessages(depthTest(samp1, samp3, "lcd-variant"))
-    test_lcd_13 <- suppressMessages(depthTest(samp1, samp3, "lcd"))
-    test_pd_13 <- suppressMessages(depthTest(samp1, samp3, "pd"))
+    y3 <- sample(c(0, 1, 2), N2, replace = T, prob = alpha)
+    samp3 <- runif_ball(N2, d = d, c = rep(0, d), r = 1)*(y3 == 0) +
+      runif_ball(N2, d = d, c = rep(2, d), r = 1)*(y3 == 1) +
+      runif_ball(N2, d = d, c = rep(4, d), r = 1)*(y3 == 2)
+    
+    test_hd_12 <- suppressMessages(depthTest(samp1, samp2, "halfspace", 
+                                             loo_correction = F))
+    test_mah_12 <- suppressMessages(depthTest(samp1, samp2, "mahalanobis", 
+                                              loo_correction = F))
+    test_pvb_12 <- suppressMessages(depthTest(samp1, samp2, "pvb", 
+                                              loo_correction = F))
+    test_lp_12 <- suppressMessages(depthTest(samp1, samp2, "lp", 
+                                             loo_correction = F))
+    test_lcd_variant_12 <- suppressMessages(depthTest(samp1, samp2, "lcd-variant", 
+                                              loo_correction = F))
+    test_lcd_12 <- suppressMessages(depthTest(samp1, samp2, "lcd", 
+                                               loo_correction = F))
+    test_pd_12 <- suppressMessages(depthTest(samp1, samp2, "pd", 
+                                             loo_correction = F))
+    
+    test_hd_13 <- suppressMessages(depthTest(samp1, samp3, "halfspace", 
+                                             loo_correction = F))
+    test_mah_13 <- suppressMessages(depthTest(samp1, samp3, "mahalanobis", 
+                                              loo_correction = F))
+    test_pvb_13 <- suppressMessages(depthTest(samp1, samp3, "pvb", 
+                                              loo_correction = F))
+    test_lp_13 <- suppressMessages(depthTest(samp1, samp3, "lp", 
+                                             loo_correction = F))
+    test_lcd_variant_13 <- suppressMessages(depthTest(samp1, samp3, "lcd-variant", 
+                                              loo_correction = F))
+    test_lcd_13 <- suppressMessages(depthTest(samp1, samp3, "lcd", 
+                                               loo_correction = F))
+    test_pd_13 <- suppressMessages(depthTest(samp1, samp3, "pd", 
+                                             loo_correction = F))
     
     stats_hd[i] <- test_hd_12$teststat
     stats_null_hd[i] <- test_hd_13$teststat
@@ -231,4 +283,5 @@ output <- data.frame(d = ds,
                      power_adjusted_lcd = power_adjusted_lcd,
                      power_adjusted_pvb = power_adjusted_pvb)
 
-write_csv(output, file = "normal_location_shift_results.csv")
+write_csv(output, 
+          file = "uniform_ball_scale_shift_3_components_uncorrected_results.csv")

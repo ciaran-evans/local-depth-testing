@@ -17,8 +17,8 @@ type_1_error_hd <- c()
 type_1_error_mah <- c()
 type_1_error_lp <- c()
 type_1_error_pd <- c()
+type_1_error_lcd_variant <- c()
 type_1_error_lcd <- c()
-type_1_error_pald <- c()
 type_1_error_cf <- c()
 type_1_error_pvb <- c()
 
@@ -26,8 +26,8 @@ power_hd <- c()
 power_mah <- c()
 power_lp <- c()
 power_pd <- c()
+power_lcd_variant <- c()
 power_lcd <- c()
-power_pald <- c()
 power_cf <- c()
 power_pvb <- c()
 
@@ -35,8 +35,8 @@ power_adjusted_hd <- c()
 power_adjusted_mah <- c()
 power_adjusted_pvb <- c()
 power_adjusted_lp <- c()
+power_adjusted_lcd_variant <- c()
 power_adjusted_lcd <- c()
-power_adjusted_pald <- c()
 power_adjusted_pd <- c()
 
 # type I error control
@@ -51,8 +51,8 @@ for(j in 1:length(ds)){
   pvals_mah <- c()
   pvals_lp <- c()
   pvals_pd <- c()
+  pvals_lcd_variant <- c()
   pvals_lcd <- c()
-  pvals_pald <- c()
   pvals_pvb <- c()
   pvals_cf <- c()
   
@@ -78,9 +78,9 @@ for(j in 1:length(ds)){
                                               loo_correction = F)$pval)
     pvals_pd[i] <- suppressMessages(depthTest(samp1, samp2, "pd",
                                               loo_correction = F)$pval)
-    pvals_lcd[i] <- suppressMessages(depthTest(samp1, samp2, "lcd",
+    pvals_lcd_variant[i] <- suppressMessages(depthTest(samp1, samp2, "lcd-variant",
                                                loo_correction = F)$pval)
-    pvals_pald[i] <- suppressMessages(depthTest(samp1, samp2, "pald",
+    pvals_lcd[i] <- suppressMessages(depthTest(samp1, samp2, "lcd",
                                                 loo_correction = F)$pval)
     pvals_pvb[i] <- suppressMessages(depthTest(samp1, samp2, "pvb",
                                                loo_correction = F)$pval)
@@ -100,8 +100,8 @@ for(j in 1:length(ds)){
   type_1_error_mah[j] <- mean(pvals_mah < 0.05)
   type_1_error_lp[j] <- mean(pvals_lp < 0.05)
   type_1_error_pd[j] <- mean(pvals_pd < 0.05)
+  type_1_error_lcd_variant[j] <- mean(pvals_lcd_variant < 0.05)
   type_1_error_lcd[j] <- mean(pvals_lcd < 0.05)
-  type_1_error_pald[j] <- mean(pvals_pald < 0.05)
   type_1_error_cf[j] <- mean(pvals_cf < 0.05)
   type_1_error_pvb[j] <- mean(pvals_pvb < 0.05)
   
@@ -120,8 +120,8 @@ for(j in 1:length(ds)){
   pvals_mah <- c()
   pvals_lp <- c()
   pvals_pd <- c()
+  pvals_lcd_variant <- c()
   pvals_lcd <- c()
-  pvals_pald <- c()
   pvals_pvb <- c()
   pvals_cf <- c()
   
@@ -133,10 +133,10 @@ for(j in 1:length(ds)){
   stats_null_pvb <- c()
   stats_lp <- c()
   stats_null_lp <- c()
+  stats_lcd_variant <- c()
+  stats_null_lcd_variant <- c()
   stats_lcd <- c()
   stats_null_lcd <- c()
-  stats_pald <- c()
-  stats_null_pald <- c()
   stats_pd <- c()
   stats_null_pd <- c()
   
@@ -166,9 +166,9 @@ for(j in 1:length(ds)){
                                               loo_correction = F))
     test_lp_12 <- suppressMessages(depthTest(samp1, samp2, "lp",
                                              loo_correction = F))
-    test_lcd_12 <- suppressMessages(depthTest(samp1, samp2, "lcd",
+    test_lcd_variant_12 <- suppressMessages(depthTest(samp1, samp2, "lcd-variant",
                                               loo_correction = F))
-    test_pald_12 <- suppressMessages(depthTest(samp1, samp2, "pald",
+    test_lcd_12 <- suppressMessages(depthTest(samp1, samp2, "lcd",
                                                loo_correction = F))
     test_pd_12 <- suppressMessages(depthTest(samp1, samp2, "pd",
                                              loo_correction = F))
@@ -181,9 +181,9 @@ for(j in 1:length(ds)){
                                               loo_correction = F))
     test_lp_13 <- suppressMessages(depthTest(samp1, samp3, "lp",
                                              loo_correction = F))
-    test_lcd_13 <- suppressMessages(depthTest(samp1, samp3, "lcd",
+    test_lcd_variant_13 <- suppressMessages(depthTest(samp1, samp3, "lcd-variant",
                                               loo_correction = F))
-    test_pald_13 <- suppressMessages(depthTest(samp1, samp3, "pald",
+    test_lcd_13 <- suppressMessages(depthTest(samp1, samp3, "lcd",
                                                loo_correction = F))
     test_pd_13 <- suppressMessages(depthTest(samp1, samp3, "pd",
                                              loo_correction = F))
@@ -196,10 +196,10 @@ for(j in 1:length(ds)){
     stats_null_pvb[i] <- test_pvb_13$teststat
     stats_lp[i] <- test_lp_12$teststat
     stats_null_lp[i] <- test_lp_13$teststat
+    stats_lcd_variant[i] <- test_lcd_variant_12$teststat
+    stats_null_lcd_variant[i] <- test_lcd_variant_13$teststat
     stats_lcd[i] <- test_lcd_12$teststat
     stats_null_lcd[i] <- test_lcd_13$teststat
-    stats_pald[i] <- test_pald_12$teststat
-    stats_null_pald[i] <- test_pald_13$teststat
     stats_pd[i] <- test_pd_12$teststat
     stats_null_pd[i] <- test_pd_13$teststat
     
@@ -207,8 +207,8 @@ for(j in 1:length(ds)){
     pvals_mah[i] <- test_mah_12$pval
     pvals_lp[i] <- test_lp_12$pval
     pvals_pd[i] <- test_pd_12$pval
+    pvals_lcd_variant[i] <- test_lcd_variant_12$pval
     pvals_lcd[i] <- test_lcd_12$pval
-    pvals_pald[i] <- test_pald_12$pval
     pvals_pvb[i] <- test_pvb_12$pval
     
     points <- rbind(samp1, samp2)
@@ -227,8 +227,8 @@ for(j in 1:length(ds)){
   power_mah[j] <- mean(pvals_mah < 0.05)
   power_lp[j] <- mean(pvals_lp < 0.05)
   power_pd[j] <- mean(pvals_pd < 0.05)
+  power_lcd_variant[j] <- mean(pvals_lcd_variant < 0.05)
   power_lcd[j] <- mean(pvals_lcd < 0.05)
-  power_pald[j] <- mean(pvals_pald < 0.05)
   power_cf[j] <- mean(pvals_cf < 0.05)
   power_pvb[j] <- mean(pvals_pvb < 0.05)
   
@@ -242,10 +242,10 @@ for(j in 1:length(ds)){
     mean(stats_lp < quantile(stats_null_lp, 0.025))
   power_adjusted_pd[j] <- mean(stats_pd > quantile(stats_null_pd, 0.975)) +
     mean(stats_pd < quantile(stats_null_pd, 0.025))
+  power_adjusted_lcd_variant[j] <- mean(stats_lcd_variant > quantile(stats_null_lcd_variant, 0.975)) +
+    mean(stats_lcd_variant < quantile(stats_null_lcd_variant, 0.025))
   power_adjusted_lcd[j] <- mean(stats_lcd > quantile(stats_null_lcd, 0.975)) +
     mean(stats_lcd < quantile(stats_null_lcd, 0.025))
-  power_adjusted_pald[j] <- mean(stats_pald > quantile(stats_null_pald, 0.975)) +
-    mean(stats_pald < quantile(stats_null_pald, 0.025))
   
   print(d)
 }
@@ -256,24 +256,24 @@ output <- data.frame(d = ds,
                      type_1_error_mah = type_1_error_mah,
                      type_1_error_lp = type_1_error_lp,
                      type_1_error_pd = type_1_error_pd,
+                     type_1_error_lcd_variant = type_1_error_lcd_variant,
                      type_1_error_lcd = type_1_error_lcd,
-                     type_1_error_pald = type_1_error_pald,
                      type_1_error_pvb = type_1_error_pvb,
                      type_1_error_cf = type_1_error_cf,
                      power_hd = power_hd,
                      power_mah = power_mah,
                      power_lp = power_lp,
                      power_pd = power_pd,
+                     power_lcd_variant = power_lcd_variant,
                      power_lcd = power_lcd,
-                     power_pald = power_pald,
                      power_pvb = power_pvb,
                      power_cf = power_cf,
                      power_adjusted_hd = power_adjusted_hd,
                      power_adjusted_mah = power_adjusted_mah,
                      power_adjusted_lp = power_adjusted_lp,
                      power_adjusted_pd = power_adjusted_pd,
+                     power_adjusted_lcd_variant = power_adjusted_lcd_variant,
                      power_adjusted_lcd = power_adjusted_lcd,
-                     power_adjusted_pald = power_adjusted_pald,
                      power_adjusted_pvb = power_adjusted_pvb)
 
 write_csv(output, file = "mixture_results_2_components_uncorrected.csv")

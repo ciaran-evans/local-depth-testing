@@ -128,19 +128,19 @@ for(j in 1:length(n_dengue)){
     # test_lcd_13 <- depthTest(samp1, samp3, "lcd")
     # test_pd_13 <- depthTest(samp1, samp3, "pd")
     
-    test_hd_12 <- depthTest(samp2, samp1, "halfspace")
-    test_mah_12 <- depthTest(samp2, samp1, "mahalanobis")
-    test_pvb_12 <- depthTest(samp2, samp1, "pvb")
-    test_lp_12 <- depthTest(samp2, samp1, "lp")
-    test_lcd_12 <- depthTest(samp2, samp1, "lcd")
-    test_pd_12 <- depthTest(samp2, samp1, "pd")
+    test_hd_12 <- suppressMessages(depthTest(samp2, samp1, "halfspace"))
+    test_mah_12 <- suppressMessages(depthTest(samp2, samp1, "mahalanobis"))
+    test_pvb_12 <- suppressMessages(depthTest(samp2, samp1, "pvb"))
+    test_lp_12 <- suppressMessages(depthTest(samp2, samp1, "lp"))
+    test_lcd_12 <- suppressMessages(depthTest(samp2, samp1, "lcd"))
+    test_pd_12 <- suppressMessages(depthTest(samp2, samp1, "pd"))
     
-    test_hd_13 <- depthTest(samp3, samp1, "halfspace")
-    test_mah_13 <- depthTest(samp3, samp1, "mahalanobis")
-    test_pvb_13 <- depthTest(samp3, samp1, "pvb")
-    test_lp_13 <- depthTest(samp3, samp1, "lp")
-    test_lcd_13 <- depthTest(samp3, samp1, "lcd")
-    test_pd_13 <- depthTest(samp3, samp1, "pd")
+    test_hd_13 <- suppressMessages(depthTest(samp3, samp1, "halfspace"))
+    test_mah_13 <- suppressMessages(depthTest(samp3, samp1, "mahalanobis"))
+    test_pvb_13 <- suppressMessages(depthTest(samp3, samp1, "pvb"))
+    test_lp_13 <- suppressMessages(depthTest(samp3, samp1, "lp"))
+    test_lcd_13 <- suppressMessages(depthTest(samp3, samp1, "lcd"))
+    test_pd_13 <- suppressMessages(depthTest(samp3, samp1, "pd"))
     
     stats_hd[i] <- test_hd_12$teststat
     stats_null_hd[i] <- test_hd_13$teststat
@@ -319,19 +319,19 @@ for(j in 1:length(n_dengue)){
     # test_lcd_13 <- depthTest(samp1, samp3, "lcd")
     # test_pd_13 <- depthTest(samp1, samp3, "pd")
     
-    test_hd_12 <- depthTest(samp2, samp1, "halfspace")
-    test_mah_12 <- depthTest(samp2, samp1, "mahalanobis")
-    test_pvb_12 <- depthTest(samp2, samp1, "pvb")
-    test_lp_12 <- depthTest(samp2, samp1, "lp")
-    test_lcd_12 <- depthTest(samp2, samp1, "lcd")
-    test_pd_12 <- depthTest(samp2, samp1, "pd")
+    test_hd_12 <- suppressMessages(depthTest(samp2, samp1, "halfspace"))
+    test_mah_12 <- suppressMessages(depthTest(samp2, samp1, "mahalanobis"))
+    test_pvb_12 <- suppressMessages(depthTest(samp2, samp1, "pvb"))
+    test_lp_12 <- suppressMessages(depthTest(samp2, samp1, "lp"))
+    test_lcd_12 <- suppressMessages(depthTest(samp2, samp1, "lcd"))
+    test_pd_12 <- suppressMessages(depthTest(samp2, samp1, "pd"))
     
-    test_hd_13 <- depthTest(samp3, samp1, "halfspace")
-    test_mah_13 <- depthTest(samp3, samp1, "mahalanobis")
-    test_pvb_13 <- depthTest(samp3, samp1, "pvb")
-    test_lp_13 <- depthTest(samp3, samp1, "lp")
-    test_lcd_13 <- depthTest(samp3, samp1, "lcd")
-    test_pd_13 <- depthTest(samp3, samp1, "pd")
+    test_hd_13 <- suppressMessages(depthTest(samp3, samp1, "halfspace"))
+    test_mah_13 <- suppressMessages(depthTest(samp3, samp1, "mahalanobis"))
+    test_pvb_13 <- suppressMessages(depthTest(samp3, samp1, "pvb"))
+    test_lp_13 <- suppressMessages(depthTest(samp3, samp1, "lp"))
+    test_lcd_13 <- suppressMessages(depthTest(samp3, samp1, "lcd"))
+    test_pd_13 <- suppressMessages(depthTest(samp3, samp1, "pd"))
     
     stats_hd[i] <- test_hd_12$teststat
     stats_null_hd[i] <- test_hd_13$teststat

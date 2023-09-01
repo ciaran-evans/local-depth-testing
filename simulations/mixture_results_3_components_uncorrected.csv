@@ -1,5 +1,5 @@
-d,type_1_error_hd,type_1_error_mah,type_1_error_lp,type_1_error_pd,type_1_error_lcd,type_1_error_pald,type_1_error_pvb,type_1_error_cf,power_hd,power_mah,power_lp,power_pd,power_lcd,power_pald,power_pvb,power_cf,power_adjusted_hd,power_adjusted_mah,power_adjusted_lp,power_adjusted_pd,power_adjusted_lcd,power_adjusted_pald,power_adjusted_pvb
-2,0.098,0.072,0.082,0.086,0.108,0.148,0.088,0.058,0.1,0.264,0.154,0.216,0.312,0.398,0.396,0.08,0.054,0.144,0.10200000000000001,0.106,0.11800000000000001,0.124,0.164
+d,type_1_error_hd,type_1_error_mah,type_1_error_lp,type_1_error_pd,type_1_error_lcd_variant,type_1_error_lcd,type_1_error_pvb,type_1_error_cf,power_hd,power_mah,power_lp,power_pd,power_lcd_variant,power_lcd,power_pvb,power_cf,power_adjusted_hd,power_adjusted_mah,power_adjusted_lp,power_adjusted_pd,power_adjusted_lcd_variant,power_adjusted_lcd,power_adjusted_pvb
+2,0.098,0.072,0.082,0.086,0.108,0.148,0.088,0.058,0.1,0.264,0.154,0.216,0.312,0.398,0.396,0.08,0.054,0.144,0.102,0.106,0.118,0.124,0.164
 5,0.104,0.18,0.07,0.084,0.124,0.152,0.164,0.066,0.136,0.856,0.3,0.47,0.678,0.722,0.798,0.254,0.036,0.544,0.192,0.312,0.444,0.496,0.426
 10,0.176,0.708,0.108,0.074,0.144,0.176,0.212,0.052,0.16,1,0.438,0.696,0.936,0.95,0.982,0.554,0.028,0.86,0.188,0.474,0.792,0.824,0.758
 20,0.232,1,0.132,0.114,0.178,0.174,0.31,0.054,0.256,1,0.602,0.892,0.996,1,0.996,0.856,0.066,0.822,0.356,0.754,0.962,0.972,0.812

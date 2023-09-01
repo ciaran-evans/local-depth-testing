@@ -4,11 +4,21 @@ library(depthtestr)
 library(vegan)
 library(mvtnorm)
 
+
+runif_ball <- function(n, d, c, r){
+  radii <- runif(n)^(1/d)
+  z = matrix(rnorm(n*d),nrow=n,ncol=d)
+  x = r*z/rep(sqrt(rowSums(z^2))/radii,1)
+  sweep(x, 2, c, "+")
+}
+
+
 N1 = 50
 N2 = 50
 nsamp <- 500
 
 ds <- c(2, 5, 10, 20, 50)
+alpha = rep(1, 3)/3
 
 type_1_error_hd <- c()
 type_1_error_mah <- c()
@@ -55,8 +65,15 @@ for(j in 1:length(ds)){
   
   for(i in 1:nsamp){
     
-    samp1 = mvtnorm::rmvnorm(N1, mean = rep(0, d))
-    samp2 = mvtnorm::rmvnorm(N2, mean = rep(delta/sqrt(N1 + N2), d))
+    y1 <- sample(c(0, 1, 2), N1, replace = T, prob = alpha)
+    samp1 <- runif_ball(N1, d = d, c = rep(0, d), r = 1)*(y1 == 0) +
+      runif_ball(N1, d = d, c = rep(2, d), r = 1)*(y1 == 1) +
+      runif_ball(N1, d = d, c = rep(4, d), r = 1)*(y1 == 2)
+    
+    y2 <- sample(c(0, 1, 2), N2, replace = T, prob = alpha)
+    samp2 <- runif_ball(N2, d = d, c = rep(0, d), r = 1)*(y2 == 0) +
+      runif_ball(N2, d = d, c = rep(2, d), r = 1)*(y2 == 1) +
+      runif_ball(N2, d = d, c = rep(4, d), r = 1)*(y2 == 2)
     
     pvals_hd[i] <- suppressMessages(depthTest(samp1, samp2, "halfspace")$pval)
     pvals_mah[i] <- suppressMessages(depthTest(samp1, samp2, "mahalanobis")$pval)
@@ -90,7 +107,7 @@ for(j in 1:length(ds)){
 }
 
 # power
-delta <- 2
+delta <- 1
 for(j in 1:length(ds)){
   
   set.seed(j)
@@ -123,9 +140,23 @@ for(j in 1:length(ds)){
   
   for(i in 1:nsamp){
     
-    samp1 = mvtnorm::rmvnorm(N1, mean = rep(0, d))
-    samp2 = mvtnorm::rmvnorm(N2, mean = rep(delta/sqrt(N1 + N2), d))
-    samp3 = mvtnorm::rmvnorm(N2, mean = rep(0, d))
+    y1 <- sample(c(0, 1, 2), N1, replace = T, prob = alpha)
+    samp1 <- runif_ball(N1, d = d, c = rep(0, d), r = 1)*(y1 == 0) +
+      runif_ball(N1, d = d, c = rep(2, d), r = 1)*(y1 == 1) +
+      runif_ball(N1, d = d, c = rep(4, d), r = 1)*(y1 == 2)
+    
+    y2 <- sample(c(0, 1, 2), N2, replace = T, prob = alpha)
+    samp2 <- runif_ball(N2, d = d, c = rep(0, d), 
+                        r = 1 + delta/sqrt(N1 + N2))*(y2 == 0) +
+      runif_ball(N2, d = d, c = rep(2, d), 
+                 r = 1 + delta/sqrt(N1 + N2))*(y2 == 1) +
+      runif_ball(N2, d = d, c = rep(4, d), 
+                 r = 1 + delta/sqrt(N1 + N2))*(y2 == 2)
+    
+    y3 <- sample(c(0, 1, 2), N2, replace = T, prob = alpha)
+    samp3 <- runif_ball(N2, d = d, c = rep(0, d), r = 1)*(y3 == 0) +
+      runif_ball(N2, d = d, c = rep(2, d), r = 1)*(y3 == 1) +
+      runif_ball(N2, d = d, c = rep(4, d), r = 1)*(y3 == 2)
     
     test_hd_12 <- suppressMessages(depthTest(samp1, samp2, "halfspace"))
     test_mah_12 <- suppressMessages(depthTest(samp1, samp2, "mahalanobis"))
@@ -231,4 +262,4 @@ output <- data.frame(d = ds,
                      power_adjusted_lcd = power_adjusted_lcd,
                      power_adjusted_pvb = power_adjusted_pvb)
 
-write_csv(output, file = "normal_location_shift_results.csv")
+write_csv(output, file = "uniform_ball_scale_shift_3_components_results.csv")
